@@ -24,6 +24,7 @@ if cmd.mode == 'eval':
     os.environ['TF_XLA_FLAGS'] = '--tf_xla_auto_jit=2 --tf_xla_cpu_global_jit'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+os.environ["TF_XLA_FLAGS"] = "--tf_xla_enable_xla_devices=false"
 
 import tensorflow as tf
 from tensorflow import keras
