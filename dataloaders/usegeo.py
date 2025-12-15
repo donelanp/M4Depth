@@ -15,13 +15,18 @@ class DataLoaderUseGeo(DataLoaderGeneric):
 
     @tf.function
     def _decode_samples(self, data_sample):
-        file = tf.io.read_file(tf.strings.join([self.db_path, data_sample['camera_l']], separator='/'))
+        file = tf.io.read_file(tf.strings.join([self.db_path, data_sample['camera']], separator='/'))
         image = tf.io.decode_jpeg(file)
         rgb_image = tf.cast(image, dtype=tf.float32)/255.
 
+        cx = data_sample['c'] * self.out_size[1] / 1320.0
+        cy = data_sample['c'] * self.out_size[0] / 1989.0
+        fx = data_sample['fx'] * self.out_size[1] / 1320.0
+        fy = data_sample['fy'] * self.out_size[0] / 1989.0
+
         camera_data = {
-            "f": tf.convert_to_tensor([data_sample['fx']*self.out_size[1], data_sample['fy']*self.out_size[0]], dtype=tf.float32),
-            "c": tf.convert_to_tensor([data_sample['cx']*self.out_size[1], data_sample['cy']*self.out_size[0]], dtype=tf.float32),
+            "f": tf.convert_to_tensor([fx, fy], dtype=tf.float32),
+            "c": tf.convert_to_tensor([cx, cy], dtype=tf.float32),
         }
         out_data = {}
         out_data["camera"] = camera_data.copy()
