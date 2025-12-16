@@ -172,4 +172,4 @@ if __name__ == '__main__':
             d_gt = sample['depth'][0, :, :, :]      # Ground truth : [h,w,1] matrix with depth in meter
             i_rgb = sample['RGB_im'][0, :, :, :]    # RGB image : [h,w,3] matrix with rgb channels ranging between 0 and 1
 
-
+            np.savez_compressed(os.path.join("./plots/", f"pred_{i:03d}.npz"), depth_est=d_est.numpy(), depth_gt=d_gt.numpy(), rgb=i_rgb.numpy())
